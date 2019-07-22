@@ -1,9 +1,7 @@
 function draw(div, size, languages, graphIndex) {
 div
-    .style('width', `${size}px`)
-    .style('height', `${size}px`)
     .attr('id', `graph-div-${graphIndex}`)
-div.selectAll('*')
+div.selectAll('svg')
     .remove()   
 let svg = div.append('svg')
 svg

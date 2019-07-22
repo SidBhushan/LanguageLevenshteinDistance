@@ -61,17 +61,6 @@ function renderAddButtonSVG() {
         .attr('stroke-width', 5)
 }
 
-const resizeObserver = new ResizeObserver(entries => {
-    entries.forEach(entry => {
-        let graphSize = Math.min(entry.contentRect.width, entry.contentRect.height)
-        let graph = graphData[Graph.findBySVG(entry.target, graphData)]
-        if (graph) {
-            graph.size = graphSize
-            updateGraphs()
-        }
-    })
-})
-
 class Graph {
     constructor() {
         this.size = 460
@@ -94,7 +83,18 @@ class Graph {
         let newGraphDiv = document.createElement('div')
         newGraphDiv.classList.add('graph')
         graphWrapper.appendChild(newGraphDiv)
-        resizeObserver.observe(newGraphDiv)
+        $(newGraphDiv).resizable({
+            aspectRatio: 1,
+            grid: 10,
+            resize: (event, ui) => {
+                let graphSize = Math.min(ui.size.width, ui.size.height)
+                let graph = graphData[Graph.findBySVG(event.target, graphData)]
+                if (graph) {
+                    graph.size = graphSize
+                    updateGraphs()
+                }
+            }
+        })
         return newGraphDiv
     }
 
@@ -121,6 +121,7 @@ class Graph {
 }
 
 let graphData = [new Graph()]
+updateGraphs()
 
 function updateGraphs() {
     renderAddButtonSVG()
