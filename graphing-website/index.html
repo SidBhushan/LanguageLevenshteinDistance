@@ -5,18 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="graph.css">
-    <link rel="stylesheet" href="languageSelector.css">
-    <link rel="stylesheet" href="jquery-ui.min.css">
+    <link rel="stylesheet" href="graph/graph.css">
+    <link rel="stylesheet" href="languagesSelector/languageSelector.css">
+    <link rel="stylesheet" href="dependencies/jquery-ui.min.css">
+    <link rel="stylesheet" href="menu/menu.css">
     <title>Languages</title>
 </head>
 
 <body>
     <div id="language-selector">
         <div id="language-options">
+            <div id="settings-button">
+                <div id="settings-menu">
+                    <div id="resize-together-control">
+                        <input type="checkbox">
+                        Resize Together
+                    </div>
+                    <div id="resize-all-control">
+                        Resize to fit
+                        <!-- <select>
+                            <option value="custom"></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select> -->
+                        <input type="number" min="1">
+                        graphs on page
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="language-group-options">
-            </div>
+        </div>
         <div id="graphs-selector">
         </div>
         <div id="add-graph"></div>
@@ -27,13 +49,15 @@
         </div> -->
     </div>
 
-    <script src="jquery-3.4.1.min.js"></script>
-    <script src="jquery-ui.min.js"></script>
+    <script src="dependencies/jquery-3.4.1.min.js"></script>
+    <script src="dependencies/jquery-ui.min.js"></script>
+    <script src="dependencies/d3.v5.min.js"></script>
 
-    <script src="d3.v5.min.js"></script>
     <script src="csv.js"></script>
-    <script src="graph.js"></script>
-    <script src="languageSelector.js"></script>
+
+    <script src="graph/graph.js"></script>
+    <script src="languagesSelector/languageSelector.js"></script>
+    <script src="menu/menu.js"></script>
 </body>
 
 </html>

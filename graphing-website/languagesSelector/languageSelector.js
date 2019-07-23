@@ -1,3 +1,7 @@
+let selectedTransfer = {
+    source: null,
+    data: ''
+}
 let languageOptionDivs = d3.select('div#language-options').selectAll('div.languages-option')
     .data(languageOptions)
     .enter()
@@ -8,6 +12,19 @@ let languageOptionDivs = d3.select('div#language-options').selectAll('div.langua
     .on('dragstart', d => {
         d3.event.dataTransfer.setData('text/plain', d)
         d3.event.dataTransfer.dropEffect = 'copy'
+    })
+    .on('click', (d, i, divs) => {
+        divs.forEach(div => {
+            div.classList.remove('selected')
+        })
+        if (selectedTransfer.source == divs[i]) {
+            selectedTransfer.source = null
+            selectedTransfer.data = null
+            return
+        }
+        divs[i].classList.add('selected')
+        selectedTransfer.source = divs[i]
+        selectedTransfer.data = d
     })
 
 let languageGroupDivs = d3.select('div#language-group-options').selectAll('div.languages-group')
@@ -21,11 +38,25 @@ let languageGroupDivs = d3.select('div#language-group-options').selectAll('div.l
         d3.event.dataTransfer.setData('text/plain', d.langs.join(','))
         d3.event.dataTransfer.dropEffect = 'copy'
     })
+    .on('click', (d, i, divs) => {
+        divs.forEach(div => {
+            div.classList.remove('selected')
+        })
+        if (selectedTransfer.source == divs[i]) {
+            selectedTransfer.source = null
+            selectedTransfer.data = null
+            return
+        }
+        divs[i].classList.add('selected')
+        selectedTransfer.source = divs[i]
+        selectedTransfer.data = d.langs.join(',')
+    })
 
 let addButton = document.getElementById('add-graph')
 
 addButton.addEventListener('click', event => {
-    graphData.push(new Graph())
+    let graphSize = graphData.length > 0 ? graphData[graphData.length - 1].size : 460
+    graphData.push(new Graph(graphSize))
 })
 
 // Add Button SVG
@@ -62,8 +93,8 @@ function renderAddButtonSVG() {
 }
 
 class Graph {
-    constructor() {
-        this.size = 460
+    constructor(size) {
+        this.size = size
         this.languages = []
         this.selector = this.addSelector()
         this.svg = this.addGraph()
@@ -82,17 +113,19 @@ class Graph {
         let graphWrapper = document.getElementById('graphs-wrapper')
         let newGraphDiv = document.createElement('div')
         newGraphDiv.classList.add('graph')
+        newGraphDiv.style.width = (this.size - 2) + 'px'
+        newGraphDiv.style.height = (this.size - 2) + 'px'
         graphWrapper.appendChild(newGraphDiv)
         $(newGraphDiv).resizable({
             aspectRatio: 1,
             grid: 10,
+            alsoResize: '.resize-together div.graph',
             resize: (event, ui) => {
-                let graphSize = Math.min(ui.size.width, ui.size.height)
-                let graph = graphData[Graph.findBySVG(event.target, graphData)]
-                if (graph) {
+                for (let graph of graphData) {
+                    let graphSize = parseInt(graph.svg.style.width)
                     graph.size = graphSize
-                    updateGraphs()
                 }
+                updateGraphs()
             }
         })
         return newGraphDiv
@@ -120,7 +153,7 @@ class Graph {
     }
 }
 
-let graphData = [new Graph()]
+let graphData = [new Graph(460)]
 updateGraphs()
 
 function updateGraphs() {
@@ -141,6 +174,9 @@ function addLanguage(langName, graphSelector) {
     addElement.classList.add('language-option')
     addElement.innerHTML = langName
     addElement.addEventListener('click', event => {
+        if (selectedTransfer.source) {
+            return
+        }
         graphSelector.removeChild(addElement)
         graphData[graphIndex].removeLanguage(langName)
         updateGraphs()
@@ -161,6 +197,20 @@ function graphSelectorEventListeners(graphSelector) {
         langNames.forEach(langName => {
             addLanguage(langName, graphSelector)
         })
+        updateGraphs()
+    })
+
+    graphSelector.addEventListener('click', event => {
+        if (!selectedTransfer.source) {
+            return
+        }
+        let langNames = selectedTransfer.data.split(',')
+        langNames.forEach(langName => {
+            addLanguage(langName, graphSelector)
+        })
+        selectedTransfer.source.classList.remove('selected')
+        selectedTransfer.source = null
+        selectedTransfer.data = ''
         updateGraphs()
     })
 
@@ -195,4 +245,13 @@ function graphSelectorEventListeners(graphSelector) {
         .attr('x2', 3)
         .attr('y2', 7)
         .attr('stroke', 'white')
+}
+
+function resizeAllGraphs(newSize) {
+    for (let index in graphData) {
+        graphData[index].svg.style.width = newSize + 'px'
+        graphData[index].svg.style.height = newSize + 'px'
+        graphData[index].size = newSize
+    }
+    updateGraphs()
 }

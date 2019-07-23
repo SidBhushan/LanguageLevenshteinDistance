@@ -1,0 +1,46 @@
+#settings-button {
+    position: relative;
+}
+
+#settings-button svg {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    left: 0.5em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+#settings-button #settings-menu {
+    width: 12em;
+    /* height: 8em; */
+    background: steelblue;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0.5em;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+}
+
+#settings-menu div {
+    border-bottom: 1px solid white;
+    border-radius: 3px;
+}
+
+#resize-together-control {
+    color: white;
+    flex: 1;
+    flex-wrap: nowrap;
+}
+
+#resize-all-control {
+    color: white;
+}
+
+#resize-all-control input {
+    width: 2em;
+    border-radius: 3px;
+}

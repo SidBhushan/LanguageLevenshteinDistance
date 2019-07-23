@@ -94,6 +94,10 @@ let languageGroups = [
     {
         name: 'Hellenic',
         langs: ['EL', 'GRC']
+    },
+    {
+        name: 'All',
+        langs: languageOptions
     }
 ]
 

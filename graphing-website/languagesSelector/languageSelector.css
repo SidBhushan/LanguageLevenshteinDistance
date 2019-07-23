@@ -16,14 +16,26 @@
 
 #language-options, #language-group-options {
     display: flex;
+    flex-wrap: wrap;
     grid-column: 1/3;
-    padding: 1em;
+    padding: 1em 0;
     text-align: center;
 }
 
 #language-options div, #language-group-options div {
-    flex: 1;
+    flex: 2;
     padding: 0 0.5em;
+    line-height: 25px;
+}
+
+#language-options div.selected, #language-group-options div.selected {
+    color: #71acc5;
+}
+
+div#settings-button {
+    /* font-size: 2em;
+    line-height: 0.5em; */
+    flex: 1;
 }
 
 #graphs-selector {
@@ -68,3 +80,17 @@
     top: 0;
     right: 0;
 }
+
+.hide {
+    display: none;
+}
+
+/* #settings-menu {
+    height: 16em;
+    width: 8em;
+    background: red;
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    z-index: 100;
+} */
