@@ -10,6 +10,7 @@
 * The resulting output CSV will go into the `output.csv` file after running `main.py`, and this can be copied to the graphing page.
 
 ## Graphing Webpage
+* In `/docs` directory (for gh-pages)
 * Uses D3.js to visualize average Levenshtein distances between languages.
 * The file `csv.js` contains all of the options, including the output CSV from the Python script (`csv`), the list of languages (`languageOptions`), and language group definitions (`languageGroups`).
 * Language group definitions are structured as follows:
